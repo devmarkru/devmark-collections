@@ -79,4 +79,14 @@ public class DmHashSet<T> implements MutableSet<T> {
     public String toString() {
         return set.toString();
     }
+
+    @Override
+    public ReadOnlySet<T> toReadOnlySet() {
+        return new DmHashSet<T>(set);
+    }
+
+    @Override
+    public Set<T> toSet() {
+        return new HashSet<>(set);
+    }
 }

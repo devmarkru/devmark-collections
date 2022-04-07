@@ -86,6 +86,11 @@ public class DmHashMap<K, V> implements MutableMap<K, V> {
     }
 
     @Override
+    public V putIfAbsent(K key, V value) {
+        return map.putIfAbsent(key, value);
+    }
+
+    @Override
     public void clear() {
         map.clear();
     }
@@ -93,6 +98,11 @@ public class DmHashMap<K, V> implements MutableMap<K, V> {
     @Override
     public V remove(K key) {
         return map.remove(key);
+    }
+
+    @Override
+    public ReadOnlyMap<K, V> toReadOnlyMap() {
+        return new DmHashMap<>(map);
     }
 
     @Override

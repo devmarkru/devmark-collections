@@ -70,4 +70,97 @@ public class DmHashMapTest {
         Assertions.assertTrue(map.containsKey("b"));
         Assertions.assertTrue(map.containsValue("melon"));
     }
+
+    @Test
+    void getKeys() {
+        ReadOnlyMap<String, String> map = DmCollections.mapOf(
+                Pair.of("a", "apple"),
+                Pair.of("b", "banana"),
+                Pair.of("m", "melon")
+        );
+        ReadOnlySet<String> keys = map.keys();
+
+        Assertions.assertTrue(keys.contains("b"));
+        Assertions.assertEquals(3, keys.size());
+    }
+
+    @Test
+    void getValues() {
+        ReadOnlyMap<String, String> map = DmCollections.mapOf(
+                Pair.of("a", "apple"),
+                Pair.of("b", "banana"),
+                Pair.of("m", "melon")
+        );
+        ReadOnlyList<String> values = map.values();
+
+        Assertions.assertTrue(values.contains("melon"));
+        Assertions.assertEquals(3, values.size());
+    }
+
+    @Test
+    void filterValues() {
+        ReadOnlyMap<String, String> map = DmCollections.mapOf(
+                Pair.of("a", "apple"),
+                Pair.of("b", "banana"),
+                Pair.of("m", "melon")
+        );
+
+        ReadOnlyList<String> filteredValues = map.filterValues(i -> i.contains("a"));
+
+        Assertions.assertEquals(2, filteredValues.size());
+        Assertions.assertTrue(filteredValues.contains("apple"));
+    }
+
+    @Test
+    void put() {
+        MutableMap<String, String> map = DmCollections.mapOf(
+                Pair.of("a", "apple"),
+                Pair.of("b", "banana"),
+                Pair.of("m", "melon")
+        ).toMutableMap();
+
+        map.put("a", "app");
+
+        Assertions.assertEquals("app", map.get("a"));
+    }
+
+    @Test
+    void putIfAbsent() {
+        MutableMap<String, String> map = DmCollections.mapOf(
+                Pair.of("a", "apple"),
+                Pair.of("b", "banana"),
+                Pair.of("m", "melon")
+        ).toMutableMap();
+
+        map.putIfAbsent("a", "app");
+
+        Assertions.assertEquals("apple", map.get("a"));
+    }
+
+    @Test
+    void clear() {
+        MutableMap<String, String> map = DmCollections.mapOf(
+                Pair.of("a", "apple"),
+                Pair.of("b", "banana"),
+                Pair.of("m", "melon")
+        ).toMutableMap();
+
+        map.clear();
+
+        Assertions.assertEquals(0, map.size());
+    }
+
+    @Test
+    void remove() {
+        MutableMap<String, String> map = DmCollections.mapOf(
+                Pair.of("a", "apple"),
+                Pair.of("b", "banana"),
+                Pair.of("m", "melon")
+        ).toMutableMap();
+
+        map.remove("b");
+
+        Assertions.assertFalse(map.containsKey("b"));
+        Assertions.assertEquals(2, map.size());
+    }
 }

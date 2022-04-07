@@ -1,10 +1,7 @@
 package ru.devmark.collection;
 
 import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.function.Consumer;
+import java.util.*;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -48,19 +45,19 @@ public class DmArrayList<T> implements MutableList<T> {
     }
 
     @Override
-    public T firstOrNull() {
+    public Optional<T> first() {
         if (list.isEmpty()) {
-            return null;
+            return Optional.empty();
         }
-        return list.get(0);
+        return Optional.ofNullable(list.get(0));
     }
 
     @Override
-    public T lastOrNull() {
+    public Optional<T> last() {
         if (list.isEmpty()) {
-            return null;
+            return Optional.empty();
         }
-        return list.get(list.size() - 1);
+        return Optional.ofNullable(list.get(list.size() - 1));
     }
 
     @Override
@@ -104,17 +101,15 @@ public class DmArrayList<T> implements MutableList<T> {
     }
 
     @Override
-    public void forEach(Consumer<? super T> action) {
-        list.forEach(action);
-    }
-
-    @Override
     public ReadOnlyList<T> take(int count) {
-        return new DmArrayList<>(list.subList(0, count));
+        return new DmArrayList<>(list.subList(0, Math.min(list.size(), count)));
     }
 
     @Override
     public ReadOnlyList<T> skip(int count) {
+        if (count >= list.size()) {
+            return new DmArrayList<>(Collections.emptyList());
+        }
         return new DmArrayList<>(list.subList(count, list.size()));
     }
 
@@ -129,18 +124,38 @@ public class DmArrayList<T> implements MutableList<T> {
     }
 
     @Override
-    public String toString() {
-        return list.toString();
+    public T[] toArray(Class<T> klass) {
+        return toArray(list, (T[]) Array.newInstance(klass, list.size()));
     }
 
     @Override
-    public T[] toArray(Class<T> klass) {
-        return toArray(list, (T[]) Array.newInstance(klass, list.size()));
+    public ReadOnlyList<T> toReadOnlyList() {
+        return new DmArrayList<T>(list);
+    }
+
+    @Override
+    public String joinToString(String delimiter) {
+        return list.stream().map(Object::toString).collect(Collectors.joining(delimiter));
+    }
+
+    @Override
+    public String toString() {
+        return list.toString();
     }
 
     private <T> T[] toArray(Collection<T> c, T[] a) {
         return c.size() > a.length ?
                 c.toArray((T[]) Array.newInstance(a.getClass().getComponentType(), c.size())) :
                 c.toArray(a);
+    }
+
+    @Override
+    public Iterator<T> iterator() {
+        return list.iterator();
+    }
+
+    @Override
+    public List<T> toList() {
+        return new ArrayList<>(list);
     }
 }

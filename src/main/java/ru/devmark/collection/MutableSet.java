@@ -7,4 +7,6 @@ public interface MutableSet<T> extends ReadOnlySet<T> {
     void clear();
 
     boolean remove(T element);
+
+    ReadOnlySet<T> toReadOnlySet();
 }

@@ -7,4 +7,6 @@ public interface MutableList<T> extends ReadOnlyList<T> {
     void clear();
 
     boolean remove(T element);
+
+    ReadOnlyList<T> toReadOnlyList();
 }

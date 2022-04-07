@@ -1,10 +1,12 @@
 package ru.devmark.collection;
 
+import java.util.List;
+import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
-public interface ReadOnlyList<T> {
+public interface ReadOnlyList<T> extends Iterable<T> {
 
     int size();
 
@@ -18,17 +20,15 @@ public interface ReadOnlyList<T> {
 
     int indexOf(T element);
 
-    T firstOrNull();
+    Optional<T> first();
 
-    T lastOrNull();
+    Optional<T> last();
 
     ReadOnlyList<T> filter(Predicate<? super T> predicate);
 
     <R> ReadOnlyList<R> map(Function<? super T, ? extends R> mapper);
 
     MutableList<T> toMutableList();
-
-    void forEach(Consumer<? super T> action);
 
     ReadOnlyList<T> take(int count);
 
@@ -39,4 +39,8 @@ public interface ReadOnlyList<T> {
     <K> ReadOnlyMap<K, T> associateBy(Function<? super T, ? extends K> keyMapper);
 
     T[] toArray(Class<T> klass);
+
+    String joinToString(String delimiter);
+
+    List<T> toList();
 }

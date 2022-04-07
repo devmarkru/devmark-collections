@@ -1,5 +1,6 @@
 package ru.devmark.collection;
 
+import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -23,4 +24,6 @@ public interface ReadOnlySet<T> {
     void forEach(Consumer<? super T> action);
 
     MutableSet<T> toMutableSet();
+
+    Set<T> toSet();
 }

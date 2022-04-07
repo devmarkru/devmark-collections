@@ -31,8 +31,8 @@ public class DmArrayListTest {
         Assertions.assertFalse(strings.contains("s"));
         Assertions.assertEquals(-1, strings.indexOf("s"));
 
-        Assertions.assertNull(strings.firstOrNull());
-        Assertions.assertNull(strings.lastOrNull());
+        Assertions.assertFalse(strings.first().isPresent());
+        Assertions.assertFalse(strings.last().isPresent());
     }
 
     @Test
@@ -46,8 +46,8 @@ public class DmArrayListTest {
         Assertions.assertEquals(0, strings.indexOf("a"));
         Assertions.assertTrue(strings.contains("a"));
 
-        Assertions.assertEquals("a", strings.firstOrNull());
-        Assertions.assertEquals("a", strings.lastOrNull());
+        Assertions.assertEquals("a", strings.first().get());
+        Assertions.assertEquals("a", strings.last().get());
 
         Assertions.assertEquals(0, strings.filter(i -> i.length() > 1).size());
 
@@ -65,8 +65,8 @@ public class DmArrayListTest {
         Assertions.assertEquals(1, strings.indexOf("ba"));
         Assertions.assertTrue(strings.contains("ab"));
 
-        Assertions.assertEquals("ab", strings.firstOrNull());
-        Assertions.assertEquals("ba", strings.lastOrNull());
+        Assertions.assertEquals("ab", strings.first().get());
+        Assertions.assertEquals("ba", strings.last().get());
 
         Assertions.assertEquals(2, strings.filter(i -> i.contains("b")).size());
 
@@ -84,8 +84,8 @@ public class DmArrayListTest {
         Assertions.assertEquals(1, strings.indexOf("ba"));
         Assertions.assertTrue(strings.contains("bb"));
 
-        Assertions.assertEquals("ab", strings.firstOrNull());
-        Assertions.assertEquals("bb", strings.lastOrNull());
+        Assertions.assertEquals("ab", strings.first().get());
+        Assertions.assertEquals("bb", strings.last().get());
 
         Assertions.assertEquals(2, strings.filter(i -> i.contains("a")).size());
 
@@ -143,6 +143,15 @@ public class DmArrayListTest {
     }
 
     @Test
+    void takeAllExists() {
+        var strings = DmCollections.listOf("aaa", "bbb", "ccc");
+        var newStrings = strings.take(10);
+
+        Assertions.assertEquals(3, strings.size());
+        Assertions.assertEquals(3, newStrings.size());
+    }
+
+    @Test
     void skip() {
         var strings = DmCollections.listOf("aaa", "bbb", "ccc");
         var newStrings = strings.skip(2);
@@ -150,5 +159,14 @@ public class DmArrayListTest {
         Assertions.assertEquals(3, strings.size());
         Assertions.assertEquals(1, newStrings.size());
         Assertions.assertEquals("ccc", newStrings.get(0));
+    }
+
+    @Test
+    void skipMoreThanExists() {
+        var strings = DmCollections.listOf("aaa", "bbb", "ccc");
+        var newStrings = strings.skip(10);
+
+        Assertions.assertEquals(3, strings.size());
+        Assertions.assertEquals(0, newStrings.size());
     }
 }

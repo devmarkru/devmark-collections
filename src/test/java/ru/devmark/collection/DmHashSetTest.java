@@ -30,4 +30,79 @@ public class DmHashSetTest {
         Assertions.assertEquals(0, set.size());
         Assertions.assertFalse(set.contains("s"));
     }
+
+    @Test
+    void set1() {
+        ReadOnlySet<String> set = DmCollections.setOf("a");
+
+        Assertions.assertFalse(set.isEmpty());
+        Assertions.assertTrue(set.isNotEmpty());
+        Assertions.assertEquals(1, set.size());
+        Assertions.assertTrue(set.contains("a"));
+    }
+
+    @Test
+    void set2() {
+        ReadOnlySet<String> set = DmCollections.setOf("aa", "bb");
+
+        Assertions.assertFalse(set.isEmpty());
+        Assertions.assertTrue(set.isNotEmpty());
+        Assertions.assertEquals(2, set.size());
+        Assertions.assertTrue(set.contains("bb"));
+    }
+
+    @Test
+    void set3() {
+        ReadOnlySet<String> set = DmCollections.setOf("aaa", "bbb", "ccc");
+
+        Assertions.assertFalse(set.isEmpty());
+        Assertions.assertTrue(set.isNotEmpty());
+        Assertions.assertEquals(3, set.size());
+        Assertions.assertTrue(set.contains("bbb"));
+    }
+
+    @Test
+    void filterSet() {
+        ReadOnlySet<String> set = DmCollections.setOf("aaaa", "b", "ccc");
+
+        var filteredSet = set.filter(i -> i.length() >= 3);
+
+        Assertions.assertEquals(2, filteredSet.size());
+    }
+
+    @Test
+    void mapSet() {
+        ReadOnlySet<String> set = DmCollections.setOf("aaaa", "b", "ccc");
+
+        var mappedList = set.map(String::length).toReadOnlySet();
+
+        Assertions.assertTrue(mappedList.contains(4));
+    }
+
+    @Test
+    void addElement() {
+        MutableSet<String> set = DmCollections.setOf("aaaa", "b", "ccc").toMutableSet();
+        Assertions.assertFalse(set.contains("ddd"));
+
+        set.add("ddd");
+        Assertions.assertTrue(set.contains("ddd"));
+    }
+
+    @Test
+    void clearSet() {
+        MutableSet<String> set = DmCollections.setOf("aaaa", "b", "ccc").toMutableSet();
+        Assertions.assertEquals(3, set.size());
+
+        set.clear();
+        Assertions.assertEquals(0, set.size());
+    }
+
+    @Test
+    void removeElement() {
+        MutableSet<String> set = DmCollections.setOf("aaaa", "b", "ccc").toMutableSet();
+        Assertions.assertTrue(set.contains("b"));
+
+        set.remove("b");
+        Assertions.assertFalse(set.contains("b"));
+    }
 }
