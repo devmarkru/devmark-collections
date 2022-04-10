@@ -31,6 +31,10 @@ public class DmCollections {
         return new DmArrayList<>(l);
     }
 
+    public static <T> MutableList<T> mutableListOf() {
+        return new DmArrayList<>(new ArrayList<>());
+    }
+
     public static <T> ReadOnlySet<T> toReadOnlySet(Collection<T> source) {
         return new DmHashSet<>(source);
     }
@@ -56,6 +60,10 @@ public class DmCollections {
         set.add(element2);
         set.add(element3);
         return new DmHashSet<>(set);
+    }
+
+    public static <T> MutableSet<T> mutableSetOf() {
+        return new DmHashSet<>(new HashSet<>());
     }
 
     public static <K, V> ReadOnlyMap<K, V> toReadOnlyMap(Map<K, V> source) {
@@ -85,5 +93,9 @@ public class DmCollections {
         map.put(element2.key(), element2.value());
         map.put(element3.key(), element3.value());
         return new DmHashMap<>(map);
+    }
+
+    public static <K, V> MutableMap<K, V> mutableMapOf() {
+        return new DmHashMap<>(new HashMap<>());
     }
 }

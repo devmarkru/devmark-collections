@@ -105,4 +105,28 @@ public class DmHashSetTest {
         set.remove("b");
         Assertions.assertFalse(set.contains("b"));
     }
+
+    @Test
+    void allMatch() {
+        var strings = DmCollections.setOf("apple", "banana", "cherry");
+
+        Assertions.assertTrue(strings.all(i -> i.length() >= 5));
+        Assertions.assertFalse(strings.all(i -> i.startsWith("z")));
+    }
+
+    @Test
+    void anyMatch() {
+        var strings = DmCollections.setOf("apple", "banana", "cherry");
+
+        Assertions.assertTrue(strings.any(i -> i.startsWith("b")));
+        Assertions.assertFalse(strings.any(i -> i.startsWith("z")));
+    }
+
+    @Test
+    void noneMatch() {
+        var strings = DmCollections.setOf("apple", "banana", "cherry");
+
+        Assertions.assertTrue(strings.none(i -> i.startsWith("z")));
+        Assertions.assertFalse(strings.none(i -> i.startsWith("a")));
+    }
 }

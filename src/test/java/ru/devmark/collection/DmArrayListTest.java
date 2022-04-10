@@ -122,6 +122,29 @@ public class DmArrayListTest {
     }
 
     @Test
+    void addAt() {
+        MutableList<String> strings = DmCollections.listOf("ab", "cd").toMutableList();
+        Assertions.assertEquals(2, strings.size());
+
+        strings.add(0, "ef");
+        Assertions.assertEquals(3, strings.size());
+        Assertions.assertEquals("ef", strings.get(0));
+        Assertions.assertEquals("ab", strings.get(1));
+    }
+
+    @Test
+    void plus() {
+        ReadOnlyList<String> first = DmCollections.listOf("ab", "cd");
+        ReadOnlyList<String> second = DmCollections.listOf("ef", "gh");
+
+        var result = first.plus(second);
+
+        Assertions.assertEquals(4, result.size());
+        Assertions.assertEquals("cd", result.get(1));
+        Assertions.assertEquals("ef", result.get(2));
+    }
+
+    @Test
     void remove() {
         var strings = DmCollections.listOf("ab", "cd");
         var mutableStrings = strings.toMutableList();
@@ -168,5 +191,80 @@ public class DmArrayListTest {
 
         Assertions.assertEquals(3, strings.size());
         Assertions.assertEquals(0, newStrings.size());
+    }
+
+    @Test
+    void toMap() {
+        var strings = DmCollections.listOf("aa", "bbb", "dddd");
+        var map = strings.toReadOnlyMap(i -> i.substring(0, 1), String::length);
+
+        Assertions.assertEquals(3, map.size());
+        Assertions.assertEquals(4, map.get("d"));
+    }
+
+    @Test
+    void associateBy() {
+        var strings = DmCollections.listOf("aaa", "bbb", "ccc");
+        var map = strings.associateBy(i -> i.substring(0, 1));
+
+        Assertions.assertEquals(3, map.size());
+        Assertions.assertEquals("bbb", map.get("b"));
+    }
+
+    @Test
+    void associateByWithMerge() {
+        var strings = DmCollections.listOf("aaa", "bbb", "bbc");
+        var map = strings.associateBy(i -> i.substring(0, 1), (a, b) -> a);
+
+        Assertions.assertEquals(2, map.size());
+        Assertions.assertEquals("bbb", map.get("b"));
+    }
+
+    @Test
+    void joinToStringEmptyList() {
+        ReadOnlyList<String> emptyString = DmCollections.emptyList();
+        Assertions.assertEquals("", emptyString.joinToString(", "));
+    }
+
+    @Test
+    void joinToStringList1() {
+        var strings = DmCollections.listOf("aaa");
+        Assertions.assertEquals("aaa", strings.joinToString(", "));
+    }
+
+    @Test
+    void joinToStringList2() {
+        var strings = DmCollections.listOf(11, 22);
+        Assertions.assertEquals("11, 22", strings.joinToString(", "));
+    }
+
+    @Test
+    void joinToStringList3() {
+        var strings = DmCollections.listOf("aaa", "bbb", "ccc");
+        Assertions.assertEquals("aaa, bbb, ccc", strings.joinToString(", "));
+    }
+
+    @Test
+    void allMatch() {
+        var strings = DmCollections.listOf("apple", "banana", "cherry");
+
+        Assertions.assertTrue(strings.all(i -> i.length() >= 5));
+        Assertions.assertFalse(strings.all(i -> i.startsWith("z")));
+    }
+
+    @Test
+    void anyMatch() {
+        var strings = DmCollections.listOf("apple", "banana", "cherry");
+
+        Assertions.assertTrue(strings.any(i -> i.startsWith("b")));
+        Assertions.assertFalse(strings.any(i -> i.startsWith("z")));
+    }
+
+    @Test
+    void noneMatch() {
+        var strings = DmCollections.listOf("apple", "banana", "cherry");
+
+        Assertions.assertTrue(strings.none(i -> i.startsWith("z")));
+        Assertions.assertFalse(strings.none(i -> i.startsWith("a")));
     }
 }

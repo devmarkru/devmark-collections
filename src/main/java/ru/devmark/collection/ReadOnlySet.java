@@ -26,4 +26,10 @@ public interface ReadOnlySet<T> {
     MutableSet<T> toMutableSet();
 
     Set<T> toSet();
+
+    boolean all(Predicate<? super T> predicate);
+
+    boolean any(Predicate<? super T> predicate);
+
+    boolean none(Predicate<? super T> predicate);
 }

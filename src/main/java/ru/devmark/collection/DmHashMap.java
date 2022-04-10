@@ -43,14 +43,25 @@ public class DmHashMap<K, V> implements MutableMap<K, V> {
     }
 
     @Override
-    public ReadOnlyList<V> filterValues(Predicate<? super V> predicate) {
-        List<V> filteredValues = new ArrayList<>();
-        map.values().forEach(e -> {
-            if (predicate.test(e)) {
-                filteredValues.add(e);
+    public ReadOnlyMap<K, V> filterKeys(Predicate<? super K> predicate) {
+        Map<K, V> filteredMap = new HashMap<>();
+        map.forEach((key, value) -> {
+            if (predicate.test(key)) {
+                filteredMap.put(key, value);
             }
         });
-        return new DmArrayList<>(filteredValues);
+        return new DmHashMap<>(filteredMap);
+    }
+
+    @Override
+    public ReadOnlyMap<K, V> filterValues(Predicate<? super V> predicate) {
+        Map<K, V> filteredMap = new HashMap<>();
+        map.forEach((key, value) -> {
+            if (predicate.test(value)) {
+                filteredMap.put(key, value);
+            }
+        });
+        return new DmHashMap<>(filteredMap);
     }
 
     @Override

@@ -2,7 +2,7 @@ package ru.devmark.collection;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Consumer;
+import java.util.function.BinaryOperator;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
@@ -36,11 +36,23 @@ public interface ReadOnlyList<T> extends Iterable<T> {
 
     ReadOnlySet<T> toReadOnlySet();
 
+    <K, V> ReadOnlyMap<K, V> toReadOnlyMap(Function<? super T, ? extends K> keyMapper, Function<? super T, ? extends V> valueMapper);
+
     <K> ReadOnlyMap<K, T> associateBy(Function<? super T, ? extends K> keyMapper);
+
+    <K> ReadOnlyMap<K, T> associateBy(Function<? super T, ? extends K> keyMapper, BinaryOperator<T> mergeFunction);
 
     T[] toArray(Class<T> klass);
 
     String joinToString(String delimiter);
 
     List<T> toList();
+
+    boolean all(Predicate<? super T> predicate);
+
+    boolean any(Predicate<? super T> predicate);
+
+    boolean none(Predicate<? super T> predicate);
+
+    ReadOnlyList<T> plus(ReadOnlyList<T> collection);
 }

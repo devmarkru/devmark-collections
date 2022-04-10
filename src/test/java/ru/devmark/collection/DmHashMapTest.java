@@ -98,6 +98,20 @@ public class DmHashMapTest {
     }
 
     @Test
+    void filterKeys() {
+        ReadOnlyMap<String, String> map = DmCollections.mapOf(
+                Pair.of("a", "apple"),
+                Pair.of("b", "banana"),
+                Pair.of("m", "melon")
+        );
+
+        ReadOnlyMap<String, String> filteredMap = map.filterKeys(i -> i.equals("a") || i.equals("m"));
+
+        Assertions.assertEquals(2, filteredMap.size());
+        Assertions.assertEquals("melon", filteredMap.get("m"));
+    }
+
+    @Test
     void filterValues() {
         ReadOnlyMap<String, String> map = DmCollections.mapOf(
                 Pair.of("a", "apple"),
@@ -105,10 +119,10 @@ public class DmHashMapTest {
                 Pair.of("m", "melon")
         );
 
-        ReadOnlyList<String> filteredValues = map.filterValues(i -> i.contains("a"));
+        ReadOnlyMap<String, String> filteredMap = map.filterValues(i -> i.contains("a"));
 
-        Assertions.assertEquals(2, filteredValues.size());
-        Assertions.assertTrue(filteredValues.contains("apple"));
+        Assertions.assertEquals(2, filteredMap.size());
+        Assertions.assertEquals("banana", filteredMap.get("b"));
     }
 
     @Test

@@ -17,7 +17,9 @@ public interface ReadOnlyMap<K, V> {
 
     boolean containsValue(V value);
 
-    ReadOnlyList<V> filterValues(Predicate<? super V> predicate);
+    ReadOnlyMap<K, V> filterKeys(Predicate<? super K> predicate);
+
+    ReadOnlyMap<K, V> filterValues(Predicate<? super V> predicate);
 
     void forEach(BiConsumer<? super K, ? super V> action);
 

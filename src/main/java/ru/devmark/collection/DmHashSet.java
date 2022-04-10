@@ -82,11 +82,26 @@ public class DmHashSet<T> implements MutableSet<T> {
 
     @Override
     public ReadOnlySet<T> toReadOnlySet() {
-        return new DmHashSet<T>(set);
+        return new DmHashSet<>(set);
     }
 
     @Override
     public Set<T> toSet() {
         return new HashSet<>(set);
+    }
+
+    @Override
+    public boolean all(Predicate<? super T> predicate) {
+        return set.stream().allMatch(predicate);
+    }
+
+    @Override
+    public boolean any(Predicate<? super T> predicate) {
+        return set.stream().anyMatch(predicate);
+    }
+
+    @Override
+    public boolean none(Predicate<? super T> predicate) {
+        return set.stream().noneMatch(predicate);
     }
 }
